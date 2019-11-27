@@ -28,8 +28,8 @@ public class Main {
         int qlBadNum=0,qsBadNum=0,zxBadNum=0,qxBadNum=0,axBadNum=0,yhBadNum=0;
         float mdGoodAve=0,htlGoodAve=0,mdGoodVariance=0,htlGoodVariance=0;
         float mdBadAve=0,htlBadAve=0,mdBadVariance=0,htlBadVariance=0;
-        float qlGood,qsGood,zxGood,qxGood,axGood,yhGood,mdGood,htlGood;
-        float qlBad,qsBad,zxBad,qxBad,axBad,yhBad,mdBad,htlBad;
+        double qlGood,qsGood,zxGood,qxGood,axGood,yhGood,mdGood,htlGood;
+        double qlBad,qsBad,zxBad,qxBad,axBad,yhBad,mdBad,htlBad;
         // 色泽,根蒂,敲声,纹理,脐部,触感,密度,含糖率,好瓜
         // 青绿,蜷缩,浊响,清晰,凹陷,硬滑,0.697,0.460
         // 先计算好瓜、坏瓜的概率
@@ -75,19 +75,19 @@ public class Main {
         }
         // 计算离散属性好坏瓜概率
         // float qlGood,qsGood,zxGood,qxGood,axGood,yhGood,mdGood,htlGood;
-        qlGood = qlGoodNum / goodCount;
-        qsGood = qsGoodNum / goodCount;
-        zxGood = zxGoodNum / goodCount;
-        qxGood = qxGoodNum / goodCount;
-        axGood = axGoodNum / goodCount;
-        yhGood = yhGoodNum / goodCount;
+        qlGood = (float) qlGoodNum / goodCount;
+        qsGood = (float) qsGoodNum / goodCount;
+        zxGood = (float) zxGoodNum / goodCount;
+        qxGood = (float) qxGoodNum / goodCount;
+        axGood = (float) axGoodNum / goodCount;
+        yhGood = (float) yhGoodNum / goodCount;
 
-        qlBad = qlBadNum / badCount;
-        qsBad = qsBadNum / badCount;
-        zxBad = zxBadNum / badCount;
-        qxBad = qxBadNum / badCount;
-        axBad = axBadNum / badCount;
-        yhBad = yhBadNum / badCount;
+        qlBad = (float) qlBadNum / badCount;
+        qsBad = (float) qsBadNum / badCount;
+        zxBad = (float) zxBadNum / badCount;
+        qxBad = (float) qxBadNum / badCount;
+        axBad = (float) axBadNum / badCount;
+        yhBad = (float) yhBadNum / badCount;
 
         // 计算连续属性均值
         mdGoodAve = mdGoodAve / goodCount;
@@ -113,15 +113,15 @@ public class Main {
         mdBadVariance = mdBadVariance / badCount;
         htlBadVariance = htlBadVariance / badCount;
         // 计算连续属性的好坏瓜概率
-        mdGood = (float) ((1 / (Math.sqrt(mdGoodVariance)*Math.sqrt(mdGoodVariance))) * Math.exp(-(Math.pow(waterMelon.getMiDu()-mdGoodAve,2)/(2*mdGoodVariance))));
-        mdBad = (float) ((1 / (Math.sqrt(mdBadVariance)*Math.sqrt(mdBadVariance))) * Math.exp(-(Math.pow(waterMelon.getMiDu()-mdBadAve,2)/(2*mdBadVariance))));
-        htlGood = (float) ((1 / (Math.sqrt(htlGoodVariance)*Math.sqrt(htlGoodVariance))) * Math.exp(-(Math.pow(waterMelon.getHanTangLv()-htlGoodAve,2)/(2*htlGoodVariance))));
-        htlBad = (float) ((1 / (Math.sqrt(htlBadVariance)*Math.sqrt(htlBadVariance))) * Math.exp(-(Math.pow(waterMelon.getHanTangLv()-htlBadAve,2)/(2*htlBadVariance))));
+        mdGood = ((1 / (Math.sqrt(mdGoodVariance)*Math.sqrt(2*Math.PI))) * Math.exp(-(Math.pow(waterMelon.getMiDu()-mdGoodAve,2)/(2*mdGoodVariance))));
+        mdBad = ((1 / (Math.sqrt(mdBadVariance)*Math.sqrt(2*Math.PI))) * Math.exp(-(Math.pow(waterMelon.getMiDu()-mdBadAve,2)/(2*mdBadVariance))));
+        htlGood = ((1 / (Math.sqrt(htlGoodVariance)*Math.sqrt(2*Math.PI))) * Math.exp(-(Math.pow(waterMelon.getHanTangLv()-htlGoodAve,2)/(2*htlGoodVariance))));
+        htlBad = ((1 / (Math.sqrt(htlBadVariance)*Math.sqrt(2*Math.PI))) * Math.exp(-(Math.pow(waterMelon.getHanTangLv()-htlBadAve,2)/(2*htlBadVariance))));
         // 好瓜概率
-        float isGood = (qlGood + qsGood + zxGood + qxGood + axGood + yhGood + mdGood + htlGood) * good;
-        float isBad = (qlBad + qsBad + zxBad + qxBad + axBad + yhBad + mdBad + htlBad) * bad;
+        double isGood = (qlGood * qsGood * zxGood * qxGood * axGood * yhGood * mdGood * htlGood) * good;
+        double isBad = (qlBad * qsBad * zxBad * qxBad * axBad * yhBad * mdBad * htlBad) * bad;
 
-        System.out.println("好瓜指数： " + isGood + "坏瓜指数： " + isBad);
+        System.out.println("好瓜指数： " + isGood + " 坏瓜指数： " + isBad);
         if (isGood > isBad)
             System.out.println("大概率是好瓜");
         else
